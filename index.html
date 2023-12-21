@@ -1,1 +1,133 @@
-<h3>Hello!</h3>
+<script>
+  // Object to store button click times
+  const clickTimesOption1 = [];
+  const clickTimesOption2 = [];
+
+  // Function to record button click time
+  
+function updateClickTimesList(optionLabel, clickTimes, listId) {
+  const clickTimesList = document.getElementById(listId);
+  clickTimesList.innerHTML = `<li>${optionLabel}:</li>`;
+  clickTimes.forEach((time) => {
+    const listItem = document.createElement('li');
+    listItem.textContent = time;
+    clickTimesList.appendChild(listItem);
+  });
+}
+  function recordButtonClick(optionId) {
+     const timestamp = new Date().toISOString();
+     if (optionId === 'option1') {
+         clickTimesOption1.push(timestamp);
+         //updateClickTimesList('option1', clickTimesOption1, 'clickTimesListOption1');
+    } 
+    else if (optionId === 'option2') {
+    clickTimesOption2.push(timestamp);
+    //updateClickTimesList('option2', clickTimesOption2, 'clickTimesListOption2');
+  }  
+      
+    // Update displayed click times
+    //updateClickTimesList();
+  }
+
+   function submitForm() {
+    const urlParams = new URLSearchParams(window.location.search)
+
+    // create the form element and point it to the correct endpoint
+    const form = document.createElement('form')
+    // form.action = (new URL('mturk/externalSubmit', urlParams.get('turkSubmitTo'))).href
+    form.action = "http://localhost:3001"
+    form.method = 'post'
+
+    // attach the assignmentId
+    const inputAssignmentId = document.createElement('input')
+    inputAssignmentId.name = 'assignmentId'
+    inputAssignmentId.value = urlParams.get('assignmentId')
+    inputAssignmentId.hidden = true
+    form.appendChild(inputAssignmentId)
+
+    // attach data I want to send back
+    const clickTime1 = document.createElement('input')
+    clickTime1.name = 'clickTime1'
+    clickTime1.value = JSON.stringify(clickTimesOption1)
+    clickTime1.hidden = true
+    form.appendChild(clickTime1)
+
+    const clickTime2 = document.createElement('input')
+    clickTime2.name = 'clickTime2'
+    clickTime2.value = JSON.stringify(clickTimesOption2)
+    clickTime2.hidden = true
+    form.appendChild(clickTime2)
+
+    // attach the form to the HTML document and trigger submission
+    document.body.appendChild(form)
+    console.log("Displaying data")
+    // for (const [key, value] of form.entries()) {
+    //     console.log(`${key}: ${value}`);
+    //   }
+    form.submit()
+}
+</script>
+
+<style>
+body {
+    padding-left: 20px;
+    margin-bottom: 20px;
+}
+#outer-container {
+    display: flex;
+    justify-content: space-around;
+    max-width: 900px;
+    margin-left: 100px;
+}
+.left-container {
+    margin-right: auto;
+    padding-right: 20px;
+}
+.right-container {
+    margin-left: auto;
+    padding-left: 20px;
+}
+#vertical-separator {
+    border: solid 1px #d5dbdb;
+}
+crowd-radio-button {
+  margin-left: 250px;
+  align-items: center;/* Adjust the margin to control space between buttons */
+}
+ input[type="radio"]{
+  margin-left: 250px;
+  align-items: center;/* Adjust the margin to control space between buttons */
+}
+</style>
+<form>
+<div>
+    <h4>Question</h4>
+    <p>${question}</p>
+</div>
+<div><h4>Which response do you prefer in terms of how well it answers the question?</h4></div>
+<div id="outer-container">
+<span class="left-container">
+    <h4>Response 1</h4>
+    <p>${response1}</p>
+</span>
+<span id="vertical-separator"></span>
+<span class="right-container">
+    <h4>Response 2</h4>
+    <p>${response2}</p>
+</span>
+</div>
+<div>
+    <input type="radio" id="option1" name="pref" onclick="recordButtonClick('option1')"><label for="option1">Response 1</label></crowd-radio-button>
+    <input type="radio" id="option2" name="pref" onclick="recordButtonClick('option2')"><label for="option2">Response 2</label></crowd-radio-button>
+</div>
+
+    <br>
+
+ Display recorded click times 
+<h2>Recorded Click Times:</h2>
+<ul id="clickTimesListOption1"></ul>
+<ul id="clickTimesListOption2"></ul>
+
+<!-- Submit button -->
+<button type="button" onclick="submitForm()">Submit HIT</button>
+</form>
