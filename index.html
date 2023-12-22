@@ -38,7 +38,14 @@
 
 <div id="question-container"></div>
 <div id="options-container"></div>
-<button id="submit-btn">Submit</button>
+<button id="next-btn">Next</button>
+
+<button onclick="handleFormSubmit()">Submit</button>
+<form method='post' id='mturk_form' action='https://www.mturk.com/mturk/externalSubmit'>
+  <input type="hidden" id="inputCoordinates" name="coordinates">
+  <input type="hidden" id="inputAssignmentId" name="assignmentId">
+</form>
+ 
 
 <script>
     var questions = [];
@@ -60,7 +67,7 @@
     function displayQuestion() {
         var questionContainer = document.getElementById("question-container");
         var optionsContainer = document.getElementById("options-container");
-        var submitButton = document.getElementById("submit-btn");
+        var nextButton = document.getElementById("next-btn");
 
         // Display the question
         questionContainer.textContent = questions[currentQuestionIndex].question;
@@ -89,7 +96,7 @@
             optionsContainer.appendChild(optionDiv);
         });
 
-        submitButton.addEventListener("click", function () {
+        nextButton.addEventListener("click", function () {
             if (selectedOption) {
                 var endTime = new Date();
                 var elapsedTime = endTime - startTime;
@@ -108,7 +115,11 @@
             } 
         });
 
-        submitButton.style.display = "block";
+        nextButton.style.display = "block";
+    }
+    function handleFormSubmit() {
+        const urlParams = new URLSearchParams(window.location.search)
+        document.getElementById('mturk_form').submit()
     }
 
     // Entry point
