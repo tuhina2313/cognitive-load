@@ -39,8 +39,8 @@
 <div id="question-container"></div>
 <div id="options-container"></div>
 <button id="next-btn">Next</button>
+<button id="submit-btn">Submit</button>
 
-<button onclick="handleFormSubmit()">Submit</button>
 <form method='post' id='mturk_form' action='https://www.mturk.com/mturk/externalSubmit'>
   <input type="hidden" id="inputAssignmentId" name="assignmentId">
 </form>
@@ -51,6 +51,8 @@
     var currentQuestionIndex = 0;
     var startTime;
     var selectedOption;
+    var responseData = {};
+    var responseTimeData = {};
 
     // Function to read CSV file
     function readCSV(file, callback) {
@@ -67,6 +69,7 @@
         var questionContainer = document.getElementById("question-container");
         var optionsContainer = document.getElementById("options-container");
         var nextButton = document.getElementById("next-btn");
+        var submitButton = document.getElementById("submit-btn");
 
         // Display the question
         questionContainer.textContent = questions[currentQuestionIndex].question;
@@ -81,7 +84,7 @@
             optionDiv.addEventListener("click", function () {
                 // Log the selected option
                 selectedOption = option;
-                console.log("Selected option: " + selectedOption);
+                console.log("Selected option: " + selectedOption); //create dictionary and send with form
 
                 // Remove previous selection stylin|}g
                 document.querySelectorAll('.option').forEach(function (el) {
@@ -101,6 +104,9 @@
                 var elapsedTime = endTime - startTime;
                 console.log("Selected option: " + selectedOption);
                 console.log("Elapsed time: " + elapsedTime + " milliseconds");
+                responseData[questions[currentQuestionIndex]] = selectedOption;
+                responseTimeData[questions[currentQuestionIndex]] = elapsedTime;
+
 
                 // Move to the next question
                 currentQuestionIndex++;
@@ -112,6 +118,37 @@
                     alert("End of the quiz!");
                 }
             } 
+        });
+        submitButton.addEventListener("click", function () {
+            prevBtn.style.display = currentQuestionIndex === questions.length ? 'block' : 'none';
+             // create the form element and point it to the correct endpoint
+            const form = document.createElement('form')
+            form.action = (new URL('mturk/externalSubmit', urlParams.get('turkSubmitTo'))).href
+            form.method = 'post'
+            
+            // attach the assignmentId
+            const inputAssignmentId = document.createElement('input')
+            inputAssignmentId.name = 'assignmentId'
+            inputAssignmentId.value = urlParams.get('assignmentId')
+            inputAssignmentId.hidden = true
+            form.appendChild(inputAssignmentId)
+            
+            // attach data I want to send back
+            const responseUserData = document.createElement('input')
+            responseUserData.name = 'response'
+            responseUserData.value = responseData
+            responseUserData.hidden = true
+            form.appendChild(responseUserData)
+
+            const timeUserData = document.createElement('input')
+            timeUserData.name = 'responseTime'
+            timeUserData.value = responseTimeData
+            timeUserData.hidden = true
+            form.appendChild(timeUserData)
+            
+            // attach the form to the HTML document and trigger submission
+            document.body.appendChild(form)
+            form.submit()
         });
 
         nextButton.style.display = "block";
