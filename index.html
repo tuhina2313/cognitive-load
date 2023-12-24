@@ -27,9 +27,27 @@
             width: 450px;
             text-align: center;
         }
+        #next-btn {
+            background-color: #008CBA; /* Blue */
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: left;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            position: absolute;left:25px;
+        }
         #submit-btn {
-            cursor: pointer;
-            display: none;
+            background-color: #04AA6D; /* Green */
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: right;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            position: absolute; right:25px;
         }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
@@ -40,10 +58,6 @@
 <div id="options-container"></div>
 <button id="next-btn">Next</button>
 <button id="submit-btn">Submit</button>
-
-<form method='post' id='mturk_form' action='https://www.mturk.com/mturk/externalSubmit'>
-  <input type="hidden" id="inputAssignmentId" name="assignmentId">
-</form>
  
 
 <script>
@@ -120,7 +134,6 @@
             } 
         });
         submitButton.addEventListener("click", function () {
-            prevBtn.style.display = currentQuestionIndex === questions.length ? 'block' : 'none';
              // create the form element and point it to the correct endpoint
             const form = document.createElement('form')
             form.action = (new URL('mturk/externalSubmit', urlParams.get('turkSubmitTo'))).href
@@ -152,6 +165,7 @@
         });
 
         nextButton.style.display = "block";
+        submitButton.style.display = currentQuestionIndex === questions.length-1 ? 'block' : 'none';
     }
     function handleFormSubmit() {
         const urlParams = new URLSearchParams(window.location.search)
@@ -173,6 +187,7 @@
         }
 
         startTime = new Date();
+        console.log("Number of questions: " + questions.length);
         displayQuestion();
     });
 </script>
