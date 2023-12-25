@@ -135,6 +135,7 @@
         });
         submitButton.addEventListener("click", function () {
              // create the form element and point it to the correct endpoint
+            const urlParams = new URLSearchParams(window.location.search)
             const form = document.createElement('form')
             form.action = (new URL('mturk/externalSubmit', urlParams.get('turkSubmitTo'))).href
             form.method = 'post'
