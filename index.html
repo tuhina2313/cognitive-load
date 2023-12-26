@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="https://assets.crowd.aws/crowd-html-elements.js"></script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiz App</title>
@@ -53,12 +55,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
 </head>
 <body>
-
+<crowd-form>
 <div id="question-container"></div>
 <div id="options-container"></div>
 <button id="next-btn">Next</button>
 <button id="submit-btn">Submit</button>
- 
+</crowd-form>
 
 <script>
     var questions = [];
@@ -135,6 +137,7 @@
         });
         submitButton.addEventListener("click", function () {
              // create the form element and point it to the correct endpoint
+            const urlParams = new URLSearchParams(window.location.search) 
             const form = document.createElement('form')
             form.action = (new URL('mturk/externalSubmit', urlParams.get('turkSubmitTo'))).href
             form.method = 'post'
