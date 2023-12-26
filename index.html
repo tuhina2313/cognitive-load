@@ -168,7 +168,8 @@
         });
 
         nextButton.style.display = "block";
-        submitButton.style.display = currentQuestionIndex === questions.length-1 ? 'block' : 'none';
+        //fix the number of questions 
+        submitButton.style.display = currentQuestionIndex === questions.length-2 ? 'block' : 'none';
     }
     function handleFormSubmit() {
         const urlParams = new URLSearchParams(window.location.search)
