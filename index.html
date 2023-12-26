@@ -63,8 +63,10 @@
     var currentQuestionIndex = 0;
     var startTime;
     var selectedOption;
-    var responseData = {};
-    var responseTimeData = {};
+    // var responseData = {};
+    // var responseTimeData = {};
+    var responseData = [];
+    var responseTimeData = [];
 
     // Function to read CSV file
     function readCSV(file, callback) {
@@ -116,8 +118,10 @@
                 var elapsedTime = endTime - startTime;
                 console.log("Selected option: " + selectedOption);
                 console.log("Elapsed time: " + elapsedTime + " milliseconds");
-                responseData[questions[currentQuestionIndex]] = selectedOption;
-                responseTimeData[questions[currentQuestionIndex]] = elapsedTime;
+                //responseData[questions[currentQuestionIndex]] = selectedOption;
+                //responseTimeData[questions[currentQuestionIndex]] = elapsedTime;
+                responseData.push(JSON.stringify(selectedOption));
+                responseTimeData.push(JSON.stringify(elapsedTime));
 
 
                 // Move to the next question
