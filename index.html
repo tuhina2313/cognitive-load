@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz App</title>
+    <title>Preference Survey</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -53,12 +53,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
 </head>
 <body>
-<form>
 <div id="question-container"></div>
 <div id="options-container"></div>
 <button id="next-btn">Next</button>
 <button id="submit-btn">Submit</button>
-</form>
 
 <script>
     var questions = [];
@@ -135,45 +133,45 @@
         });
         submitButton.addEventListener("click", function () {
              // create the form element and point it to the correct endpoint
-            const urlParams = new URLSearchParams(window.location.search) 
-            const form = document.createElement('form')
-            form.action = (new URL('mturk/externalSubmit', urlParams.get('turkSubmitTo'))).href
-            form.method = 'post'
+            const urlParams = new URLSearchParams(window.location.search); 
+            const form = document.createElement('form');
+            form.action = (new URL('mturk/externalSubmit', urlParams.get('turkSubmitTo'))).href;
+            form.method = 'post';
             
             // attach the assignmentId
-            const inputAssignmentId = document.createElement('input')
-            inputAssignmentId.name = 'assignmentId'
-            inputAssignmentId.value = urlParams.get('assignmentId')
-            inputAssignmentId.hidden = true
-            form.appendChild(inputAssignmentId)
+            const inputAssignmentId = document.createElement('input');
+            inputAssignmentId.name = 'assignmentId';
+            inputAssignmentId.value = urlParams.get('assignmentId');
+            inputAssignmentId.hidden = true;
+            form.appendChild(inputAssignmentId);
             
             // attach data I want to send back
-            const responseUserData = document.createElement('input')
-            responseUserData.name = 'response'
-            responseUserData.value = responseData
-            responseUserData.hidden = true
-            form.appendChild(responseUserData)
+            const responseUserData = document.createElement('input');
+            responseUserData.name = 'response';
+            responseUserData.value = JSON.stringify(responseData);
+            responseUserData.hidden = true;
+            form.appendChild(responseUserData);
 
-            const timeUserData = document.createElement('input')
-            timeUserData.name = 'responseTime'
-            timeUserData.value = responseTimeData
-            timeUserData.hidden = true
-            form.appendChild(timeUserData)
+            const timeUserData = document.createElement('input');
+            timeUserData.name = 'responseTime';
+            timeUserData.value = JSON.stringify(responseTimeData);
+            timeUserData.hidden = true;
+            form.appendChild(timeUserData);
             
             // attach the form to the HTML document and trigger submission
-            document.body.appendChild(form)
-            form.submit()
+            document.body.appendChild(form);
+            form.submit();
         });
 
         nextButton.style.display = "block";
         //fix the number of questions 
         submitButton.style.display = currentQuestionIndex === questions.length-2 ? 'block' : 'none';
     }
-    function handleFormSubmit() {
-        const urlParams = new URLSearchParams(window.location.search)
-        document.getElementById('inputAssignmentId').value = urlParams.get('assignmentId')
-        document.getElementById('mturk_form').submit()
-    }
+    // function handleFormSubmit() {
+    //     const urlParams = new URLSearchParams(window.location.search)
+    //     document.getElementById('inputAssignmentId').value = urlParams.get('assignmentId')
+    //     document.getElementById('mturk_form').submit()
+    // }
 
     // Entry point
     readCSV("questions.csv", function (data) {
