@@ -57,6 +57,7 @@
 <div id="options-container"></div>
 <button id="next-btn">Next</button>
 <button id="submit-btn">Submit</button>
+<div id="end-container"></div>
 
 <script>
     var questions = [];
@@ -78,6 +79,11 @@
         });
     }
 
+    // Function to display 'End-of-survey'
+    function displayLastPage() {
+        var endPage = document.getElementById("end-container");
+        endPage.textContent = "Thank you for participating in the study. Please click on the submit button to finish."
+    }
     // Function to display the question
     function displayQuestion() {
         var questionContainer = document.getElementById("question-container");
@@ -137,6 +143,14 @@
         });
         submitButton.addEventListener("click", function () {
              // create the form element and point it to the correct endpoint
+             if (selectedOption) {
+                var endTime = new Date();
+                var elapsedTime = endTime - startTime;
+                
+                responseData.push(JSON.stringify(selectedOption));
+                responseTimeData.push(JSON.stringify(elapsedTime));
+            }
+
             const urlParams = new URLSearchParams(window.location.search); 
             const form = document.createElement('form');
             form.action = (new URL('mturk/externalSubmit', urlParams.get('turkSubmitTo'))).href;
@@ -168,8 +182,12 @@
         });
 
         nextButton.style.display = "block";
+        submitButton.style.display = "none";
         //fix the number of questions 
-        submitButton.style.display = currentQuestionIndex === questions.length-2 ? 'block' : 'none';
+        if (currentQuestionIndex === questions.length-2){
+            displayLastPage();
+            submitButton.style.display = "block";
+        }
     }
     // function handleFormSubmit() {
     //     const urlParams = new URLSearchParams(window.location.search)
@@ -178,7 +196,7 @@
     // }
 
     // Entry point
-    readCSV("questions.csv", function (data) {
+    readCSV("questions-sample.csv", function (data) {
         // Assuming CSV structure: question, option1, option2, ..., correctAnswer
         for (var i = 0; i < data.length; i++) {
             var questionData = data[i];
