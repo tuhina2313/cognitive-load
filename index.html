@@ -182,12 +182,13 @@
         });
 
         nextButton.style.display = "block";
-        submitButton.style.display = "none";
+        submitButton.style.display = currentQuestionIndex === questions.length-2 ? 'block' : 'none';
+
         //fix the number of questions 
-        if (currentQuestionIndex === questions.length-2){
-            displayLastPage();
-            submitButton.style.display = "block";
-        }
+        // if (currentQuestionIndex === questions.length-2){
+        //     displayLastPage();
+        //     submitButton.style.display = "block";
+        // }
     }
     // function handleFormSubmit() {
     //     const urlParams = new URLSearchParams(window.location.search)
