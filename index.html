@@ -199,6 +199,7 @@
     // Entry point
     readCSV("questions-sample.csv", function (data) {
         // Assuming CSV structure: question, option1, option2, ..., correctAnswer
+        console.log("All data: " + data);
         for (var i = 0; i < data.length; i++) {
             var questionData = data[i];
             var question = {
@@ -207,6 +208,8 @@
                 correctAnswer: questionData[questionData.length - 1]
             };
             questions.push(question);
+            console.log("Each question: " + question);
+            console.log("Each response: ", question.options);
         }
 
         startTime = new Date();
