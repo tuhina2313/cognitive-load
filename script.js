@@ -124,15 +124,15 @@ function displayQuestion() {
         // attach data I want to send back
         const responseUserData = document.createElement('input');
         responseUserData.name = 'response';
-        responseUserData.value = JSON.stringify(responseData);
+        responseUserData.value = JSON.stringify(allResponses);
         responseUserData.hidden = true;
         form.appendChild(responseUserData);
 
-        const timeUserData = document.createElement('input');
-        timeUserData.name = 'responseTime';
-        timeUserData.value = JSON.stringify(responseTimeData);
-        timeUserData.hidden = true;
-        form.appendChild(timeUserData);
+        // const timeUserData = document.createElement('input');
+        // timeUserData.name = 'responseTime';
+        // timeUserData.value = JSON.stringify(responseTimeData);
+        // timeUserData.hidden = true;
+        // form.appendChild(timeUserData);
         
         // attach the form to the HTML document and trigger submission
         document.body.appendChild(form);
