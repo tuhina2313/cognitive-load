@@ -1,8 +1,9 @@
 var questions = [];
 var currentQuestionIndex = 0;
-var startTime;
-var endTime
-var selectedOption;
+var startTime = null;
+var endTime = null;
+var selectedOption = null;
+var selectedIndex = null;
 var allClicks = [];
 var allResponses = [];
 var studyTime = 1;
@@ -74,9 +75,9 @@ function displayQuestion() {
         optionDiv.addEventListener("click", function () {
             // Log the selected option
             selectedOption = option;
-            console.log("Selected option: " + index); //create dictionary and send with form
-            selected_text = JSON.stringify(selectedOption);
-            allClicks.push(selected_text);
+            selectedIndex = index;
+            console.log("Selected option: " + selectedIndex); //create dictionary and send with form
+            allClicks.push(index);
 
             // Remove previous selection stylin|}g
             document.querySelectorAll('.option').forEach(function (el) {
@@ -94,8 +95,23 @@ function displayQuestion() {
         if (selectedOption) {
             endTime = new Date();
             var elapsedTime = endTime - startTime;
+            var question_tag = JSON.stringify(questions[currentQuestionIndex].tag);
+            var correct_option = JSON.stringify(questions[currentQuestionIndex].correct_option);
 
-            createResponseData(JSON.stringify(questions[currentQuestionIndex].question), selected_text, JSON.stringify(questions[currentQuestionIndex].tag), allClicks, startTime, endTime, elapsedTime);
+            if (question_tag.replace(/[^a-zA-Z0-9]/g, '') == "attentionCheck")
+            {
+                console.log("Enter check 1");
+                if(correct_option.replace(/[^a-zA-Z0-9]/g, '') != selectedIndex)
+                {
+                    console.log("Enter check 2");
+                    document.getElementById("question-box").style.display = 'none';
+                    var endPage = document.getElementById("end-container");
+                    endPage.textContent = "ATTENTION CHECK FAILED! \n Thank you for participating in the study. Please click on the submit button to end.";
+                    submitButton.style.display = 'block';
+                }
+            }
+
+            createResponseData(JSON.stringify(questions[currentQuestionIndex].question), JSON.stringify(selectedOption), JSON.stringify(questions[currentQuestionIndex].tag), allClicks, startTime, endTime, elapsedTime);
 
             // Move to the next question
             currentQuestionIndex++;
@@ -162,6 +178,5 @@ readCSV("questions-sample.csv", function (data) {
 
     startTime = new Date();
     console.log("Number of questions: " + questions.length);
-    console.log("All Questions: " + JSON.stringify(questions));
     displayQuestion();
 });
