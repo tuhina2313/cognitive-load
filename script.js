@@ -116,7 +116,7 @@ function displayQuestion() {
             var endTime = new Date();
             var elapsedTime = endTime - startTime;
         }
-        console.log("All Responses: " + allResponses);
+        console.log("All Responses: " + JSON.stringify(allResponses));
         const urlParams = new URLSearchParams(window.location.search); 
         const form = document.createElement('form');
         form.action = (new URL('mturk/externalSubmit', urlParams.get('turkSubmitTo'))).href;
@@ -153,7 +153,7 @@ readCSV("questions-sample.csv", function (data) {
         var questionData = data[i];
         var question = {
             question: questionData[0],
-            options: questionData.slice(1, -1),
+            options: questionData.slice(1, -2),
             tag: questionData[questionData.length - 2],
             correct_option: questionData[questionData.length - 1],
         };
@@ -162,6 +162,6 @@ readCSV("questions-sample.csv", function (data) {
 
     startTime = new Date();
     console.log("Number of questions: " + questions.length);
-    console.log("All Questions: " + questions);
+    console.log("All Questions: " + JSON.stringify(questions));
     displayQuestion();
 });
