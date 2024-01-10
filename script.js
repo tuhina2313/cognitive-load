@@ -1,13 +1,13 @@
 var questions = [];
 var currentQuestionIndex = 0;
 var startTime;
+var endTime
 var selectedOption;
-// var responseData = {};
-// var responseTimeData = {};
-var responseData = [];
-var responseTimeData = [];
+var allClicks = [];
 var allResponses = [];
-
+var studyTime = 1;
+const startStudyTime = new Date().getTime();
+const endStudyTime = startStudyTime + studyTime * 60 * 1000;
 
 // Function to read CSV file
 function readCSV(file, callback) {
@@ -19,22 +19,40 @@ function readCSV(file, callback) {
     });
 }
 
-function createResponseData(ques, res, startT, endT, elaspsedT){
+function createResponseData(ques, res, question_tag, allClicks, startT, endT, elaspsedT){
     var responseData = {
         question: ques,
         response: res,
+        tag: question_tag,
+        clicks : allClicks,
         startT: JSON.stringify(startT),
         endT: JSON.stringify(endT),
         responseT: JSON.stringify(elaspsedT),
     };
     allResponses.push(responseData);
 }
+function updateTimer() {
+    var currentTime = new Date().getTime();
+    const remainingTime = endStudyTime - currentTime;
+    if (remainingTime <= 0) {
+      // Time is up, show the submit button
+      displayLastPage();
+    } else {
+      // Calculate remaining minutes and seconds
+      const minutes = Math.floor(remainingTime / 60000);
+      const seconds = Math.floor((remainingTime % 60000) / 1000);
 
+      document.getElementById('timer').innerHTML = `Time remaining: ${minutes}m ${seconds}s`;
+      setTimeout(updateTimer, 1000); // Update every second
+    }
+}
 // Function to display 'End-of-survey'
 function displayLastPage() {
+    var submitButton = document.getElementById("submit-btn");
+    submitButton.style.display = 'block';
     var endPage = document.getElementById("end-container");
     endPage.innerHTML = "";
-    endPage.textContent = "Thank you for participating in the study. Please click on the submit button to finish."
+    endPage.textContent = "Thank you for participating in the study. Please click on the submit button to finish.";
 }
 // Function to display the question
 function displayQuestion() {
@@ -45,7 +63,6 @@ function displayQuestion() {
 
     // Display the question
     questionContainer.textContent = questions[currentQuestionIndex].question;
-    question_text = JSON.stringify(questions[currentQuestionIndex].question);
 
     // Display the options
     optionsContainer.innerHTML = "";
@@ -59,7 +76,7 @@ function displayQuestion() {
             selectedOption = option;
             console.log("Selected option: " + selectedOption); //create dictionary and send with form
             selected_text = JSON.stringify(selectedOption);
-
+            allClicks.push(selected_text);
 
             // Remove previous selection stylin|}g
             document.querySelectorAll('.option').forEach(function (el) {
@@ -75,27 +92,21 @@ function displayQuestion() {
 
     nextButton.addEventListener("click", function () {
         if (selectedOption) {
-            var endTime = new Date();
+            endTime = new Date();
             var elapsedTime = endTime - startTime;
-            console.log("Selected option: " + selectedOption);
-            console.log("Elapsed time: " + elapsedTime + " milliseconds");
-            responseData.push(JSON.stringify(selectedOption));
-            responseTimeData.push(JSON.stringify(elapsedTime));
 
-            createResponseData(question_text, selected_text, startTime, endTime, elapsedTime);
+            createResponseData(JSON.stringify(questions[currentQuestionIndex].question), selected_text, JSON.stringify(questions[currentQuestionIndex].tag), allClicks, startTime, endTime, elapsedTime);
 
             // Move to the next question
             currentQuestionIndex++;
             selectedOption = null; // Reset selected option
+            allClicks = [];
             if (currentQuestionIndex < questions.length) {
                 displayQuestion();
                 startTime = new Date(); // Record start time for the next question
             } else {
-                questionContainer.style.display = 'none';
-                optionsContainer.style.display = 'none';
-                nextButton.style.display = 'none';
-                displayLastPage();
-                submitButton.style.display = "block";
+                document.getElementById("question-box").style.display = 'none';
+                updateTimer();
             }
         } 
     });
@@ -104,11 +115,8 @@ function displayQuestion() {
             if (selectedOption) {
             var endTime = new Date();
             var elapsedTime = endTime - startTime;
-            
-            responseData.push(JSON.stringify(selectedOption));
-            responseTimeData.push(JSON.stringify(elapsedTime));
         }
-
+        console.log("All Responses: " + allResponses);
         const urlParams = new URLSearchParams(window.location.search); 
         const form = document.createElement('form');
         form.action = (new URL('mturk/externalSubmit', urlParams.get('turkSubmitTo'))).href;
@@ -127,12 +135,6 @@ function displayQuestion() {
         responseUserData.value = JSON.stringify(allResponses);
         responseUserData.hidden = true;
         form.appendChild(responseUserData);
-
-        // const timeUserData = document.createElement('input');
-        // timeUserData.name = 'responseTime';
-        // timeUserData.value = JSON.stringify(responseTimeData);
-        // timeUserData.hidden = true;
-        // form.appendChild(timeUserData);
         
         // attach the form to the HTML document and trigger submission
         document.body.appendChild(form);
@@ -152,16 +154,14 @@ readCSV("questions-sample.csv", function (data) {
         var question = {
             question: questionData[0],
             options: questionData.slice(1, -1),
-            correctAnswer: questionData[questionData.length - 1]
+            tag: questionData[questionData.length - 2],
+            correct_option: questionData[questionData.length - 1],
         };
         questions.push(question);
     }
 
     startTime = new Date();
     console.log("Number of questions: " + questions.length);
+    console.log("All Questions: " + questions);
     displayQuestion();
-    if(currentQuestionIndex === questions.length)
-    {
-        displayLastPage();
-    }
 });
