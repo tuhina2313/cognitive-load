@@ -74,7 +74,7 @@ function displayQuestion() {
         optionDiv.addEventListener("click", function () {
             // Log the selected option
             selectedOption = option;
-            console.log("Selected option: " + selectedOption); //create dictionary and send with form
+            console.log("Selected option: " + index); //create dictionary and send with form
             selected_text = JSON.stringify(selectedOption);
             allClicks.push(selected_text);
 
