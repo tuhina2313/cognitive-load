@@ -41,7 +41,7 @@ body {
     display: inline-block;
     font-size: 16px;
     position: relative;
-    top: 70%;
+    top: 80%;
 }
 #submit-btn {
     background-color: #04AA6D; /* Green */

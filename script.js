@@ -166,7 +166,7 @@ function displayQuestion() {
 }
 
 // Entry point
-readCSV("questions-sample.csv", function (data) {
+readCSV("batch1.csv", function (data) {
     // Assuming CSV structure: question, option1, option2, ..., correctAnswer
     for (var i = 0; i < data.length; i++) {
         var questionData = data[i];
