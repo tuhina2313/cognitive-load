@@ -57,12 +57,14 @@ function displayLastPage() {
 }
 // Function to display the question
 function displayQuestion() {
+    var questionHeading = document.getElementById("question-heading");
     var questionContainer = document.getElementById("question-container");
     var optionsContainer = document.getElementById("options-container");
     var nextButton = document.getElementById("next-btn");
     var submitButton = document.getElementById("submit-btn");
 
     // Display the question
+    questionHeading.textContent = "Question "+ (currentQuestionIndex+1);
     questionContainer.textContent = questions[currentQuestionIndex].question;
 
     // Display the options
@@ -108,6 +110,7 @@ function displayQuestion() {
                     var endPage = document.getElementById("end-container");
                     endPage.textContent = "ATTENTION CHECK FAILED! \n Thank you for participating in the study. Please click on the submit button to end.";
                     submitButton.style.display = 'block';
+                    return;
                 }
             }
 
