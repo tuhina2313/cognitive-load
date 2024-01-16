@@ -1,4 +1,5 @@
 var questions = [];
+var optionsArray = null;
 var currentQuestionIndex = 0;
 var startTime = null;
 var endTime = null;
@@ -39,7 +40,6 @@ function shuffleArray(array) {
         const j = Math.floor(Math.random() * (i + 1));
         [array[i], array[j]] = [array[j], array[i]];
     }
-    return array;
 }
 
 function updateTimer() {
@@ -124,8 +124,8 @@ function displayQuestion() {
     questionHeading.textContent = "Question "+ (currentQuestionIndex+1);
     questionContainer.textContent = questions[currentQuestionIndex].question;
 
-    var optionsArray = questions[currentQuestionIndex].options.slice(); // Create a copy of the original array
-    var shuffledOptions = shuffleArray(optionsArray);
+    optionsArray = questions[currentQuestionIndex].options.slice(); // Create a copy of the original array
+    shuffleArray(optionsArray);
 
     // Display the options
     optionsContainer.innerHTML = "";
@@ -226,7 +226,7 @@ function displayQuestion() {
 }
 
 // Entry point
-readCSV("batch1.csv", function (data) {
+readCSV("files/batch1.csv", function (data) {
     // Assuming CSV structure: question, option1, option2, ..., correctAnswer
     for (var i = 0; i < data.length; i++) {
         var questionData = data[i];
@@ -241,6 +241,6 @@ readCSV("batch1.csv", function (data) {
 
     startTime = new Date();
     console.log("Number of questions: " + questions.length);
-    questions = shuffleArray(questions);
+    shuffleArray(questions);
     startStudy();
 });
