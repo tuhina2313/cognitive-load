@@ -114,6 +114,8 @@ function displayQuestion() {
     document.getElementById("instructions-page").style.display = 'none';
     document.getElementById("consent-page").style.display = 'none';
 
+    document.getElementById("question-box").style.display = 'block';
+
     var questionHeading = document.getElementById("question-heading");
     var questionContainer = document.getElementById("question-container");
     var optionsContainer = document.getElementById("options-container");
@@ -160,19 +162,19 @@ function displayQuestion() {
             var question_tag = JSON.stringify(questions[currentQuestionIndex].tag);
             var correct_option = JSON.stringify(questions[currentQuestionIndex].correct_option);
 
-            if (question_tag.replace(/[^a-zA-Z0-9]/g, '') == "attentionCheck")
-            {
-                console.log("Enter check 1");
-                if(correct_option.replace(/[^a-zA-Z0-9]/g, '') != selectedIndex)
-                {
-                    console.log("Enter check 2");
-                    document.getElementById("question-box").style.display = 'none';
-                    var endPage = document.getElementById("end-container");
-                    endPage.textContent = "ATTENTION CHECK FAILED! \n Thank you for participating in the study. Please click on the submit button to end.";
-                    submitButton.style.display = 'block';
-                    return;
-                }
-            }
+            // if (question_tag.replace(/[^a-zA-Z0-9]/g, '') == "attentionCheck")
+            // {
+            //     console.log("Enter check 1");
+            //     if(correct_option.replace(/[^a-zA-Z0-9]/g, '') != selectedIndex)
+            //     {
+            //         console.log("Enter check 2");
+            //         document.getElementById("question-box").style.display = 'none';
+            //         var endPage = document.getElementById("end-container");
+            //         endPage.textContent = "ATTENTION CHECK FAILED! \n Thank you for participating in the study. Please click on the submit button to end.";
+            //         submitButton.style.display = 'block';
+            //         return;
+            //     }
+            // }
 
             createResponseData(JSON.stringify(questions[currentQuestionIndex].question), JSON.stringify(selectedOption), JSON.stringify(questions[currentQuestionIndex].tag), allClicks, startTime, endTime, elapsedTime);
 
