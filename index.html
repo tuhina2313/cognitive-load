@@ -8,17 +8,55 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
 </head>
 <body>
-<div id="question-box">
-    <div id="question-heading"></div>
-<div id="question-container"></div>
-<h4>Which of the following responses do you prefer? </h4>
-<div id="options-container"></div>
-<button id="next-btn">Next</button>
-</div>
-<div id="timer"></div>
-<button id="submit-btn">Submit</button>
-<div id="end-container"></div>
+    <div id="pre-study">
+        <div id="intro-page">
+        <h3>Help us rate question-response pairs!</h3>
+        <p>Thank you for participating in our study! In this task, you will be presented with a series of question-response pairs. Your task is to carefully read each question and its corresponding response and provide a rating based on your judgment of the quality and appropriateness of the response.</p>
+        <br>
+        <h4><i>Example</i></h4>
+    
+        <br>
+        <button id="start-btn">Start</button>
+    
+        </div>
+        <div id="consent-page">
+            <embed src="files/consentForm.pdf" type="application/pdf" width="80%" height="600px">
+            </embed>
+            <br>
+            <button id="consent-btn">I Agree</button>
+        </div>
+        <div id="instructions-page">
+            <h4>INSTRUCTIONS</h4>
+            <p>Thank you for participating in our study! In this task, you will be presented with a series of question-response pairs. Your task is to carefully read each question and its corresponding response and provide a rating based on your judgment of the quality and appropriateness of the response. Make sure you understand the context and take your time to provide the rating. Your responses will be manually reviewed post-completion.</p>
+            <p> <strong>Rating Scale</strong> Please use the following rating scale to evaluate the question-response pairs: </p>
+            <ul>
+                <li>7 (best) - the output is almost perfect, I can’t think of a way to make it much better.</li>
+                <li>1 (worst) - the output is terrible, it’s completely useless and/or does not answer the question</li>
+            </ul>
+            <p>The study will run for approximately 30 minutes. This is ample time to evaluate each question-response pair. Use the “next” button to go to the next question. You cannot move to the next question unless you provide a response for the current one.</p>
+            <p> <strong>Submit Answers: </strong>Once you have rated all the QA pairs, please click the "Submit" button to finalize your responses.</p>
+            <p> <strong>Contact Information: </strong>If you have any questions or encounter issues during the study, please contact us at ttripathi@umass.edu</p>
+            <!-- <object id="pdf-instructions" data="files/instructions.pdf" type="application/pdf">
+                <p>It appears you don't have a PDF plugin for this browser. You can <a href="instructions.pdf">download the PDF file.</a></p>
+            </object> -->
+            <h4>I have read and understood the instructions for the study.</h4>
+            <button id="agree-btn">Agree and Continue</button>
+        </div>
+    </div>
 
+
+    <div id="question-box">
+        <div id="question-heading"></div>
+        <div id="question-container"></div>
+            <h4>Which of the following responses do you prefer? </h4>
+        <div id="options-container"></div>
+        <button id="next-btn">Next</button>
+    </div>
+    <div id="end-study">
+        <div id="timer"></div>
+        <button id="submit-btn">Submit</button>
+        <div id="end-container"></div>
+    </div>
 </body>
 
 <script type="text/javascript" src="script.js"></script>

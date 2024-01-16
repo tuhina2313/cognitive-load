@@ -32,6 +32,16 @@ function createResponseData(ques, res, question_tag, allClicks, startT, endT, el
     };
     allResponses.push(responseData);
 }
+
+function shuffleArray(array) {
+    // Shuffle array using Fisher-Yates algorithm
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
 function updateTimer() {
     var currentTime = new Date().getTime();
     const remainingTime = endStudyTime - currentTime;
@@ -47,6 +57,49 @@ function updateTimer() {
       setTimeout(updateTimer, 1000); // Update every second
     }
 }
+
+function startStudy(){
+    document.getElementById("consent-page").style.display = 'none';
+    document.getElementById("instructions-page").style.display = 'none';
+    document.getElementById("question-box").style.display = 'none';
+    document.getElementById("end-study").style.display = 'none';
+    var startButton = document.getElementById("start-btn");
+
+    startButton.addEventListener("click", function () {
+        displayConsentForm();
+    });
+}
+
+function displayConsentForm(){
+    document.getElementById("intro-page").style.display = 'none';
+    document.getElementById("instructions-page").style.display = 'none';
+    document.getElementById("question-box").style.display = 'none';
+    document.getElementById("end-study").style.display = 'none';
+
+    document.getElementById("consent-page").style.display = 'block';
+
+    var consentButton = document.getElementById("consent-btn");
+
+    consentButton.addEventListener("click", function () {
+        displayInstructions();
+    });
+}
+
+function displayInstructions(){
+    document.getElementById("intro-page").style.display = 'none';
+    document.getElementById("consent-page").style.display = 'none';
+    document.getElementById("question-box").style.display = 'none';
+    document.getElementById("end-study").style.display = 'none';
+
+    document.getElementById("instructions-page").style.display = 'block';
+
+    var agreeButton = document.getElementById("agree-btn");
+
+    agreeButton.addEventListener("click", function () {
+        displayQuestion();
+    });
+}
+
 // Function to display 'End-of-survey'
 function displayLastPage() {
     var submitButton = document.getElementById("submit-btn");
@@ -57,6 +110,10 @@ function displayLastPage() {
 }
 // Function to display the question
 function displayQuestion() {
+    document.getElementById("intro-page").style.display = 'none';
+    document.getElementById("instructions-page").style.display = 'none';
+    document.getElementById("consent-page").style.display = 'none';
+
     var questionHeading = document.getElementById("question-heading");
     var questionContainer = document.getElementById("question-container");
     var optionsContainer = document.getElementById("options-container");
@@ -67,9 +124,12 @@ function displayQuestion() {
     questionHeading.textContent = "Question "+ (currentQuestionIndex+1);
     questionContainer.textContent = questions[currentQuestionIndex].question;
 
+    var optionsArray = questions[currentQuestionIndex].options.slice(); // Create a copy of the original array
+    var shuffledOptions = shuffleArray(optionsArray);
+
     // Display the options
     optionsContainer.innerHTML = "";
-    questions[currentQuestionIndex].options.forEach(function (option, index) {
+    shuffledOptions.forEach(function (option, index) {
         var optionDiv = document.createElement("div");
         optionDiv.className = "option";
         optionDiv.textContent = option;
@@ -181,5 +241,6 @@ readCSV("batch1.csv", function (data) {
 
     startTime = new Date();
     console.log("Number of questions: " + questions.length);
-    displayQuestion();
+    questions = shuffleArray(questions);
+    startStudy();
 });
