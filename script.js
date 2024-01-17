@@ -131,7 +131,7 @@ function displayQuestion() {
 
     // Display the options
     optionsContainer.innerHTML = "";
-    shuffledOptions.forEach(function (option, index) {
+    optionsArray.forEach(function (option, index) {
         var optionDiv = document.createElement("div");
         optionDiv.className = "option";
         optionDiv.textContent = option;
