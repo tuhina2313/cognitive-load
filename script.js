@@ -7,7 +7,7 @@ var selectedOption = null;
 var selectedIndex = null;
 var allClicks = [];
 var allResponses = [];
-var studyTime = 1;
+var studyTime = 10;
 const startStudyTime = new Date().getTime();
 const endStudyTime = startStudyTime + studyTime * 60 * 1000;
 
@@ -131,7 +131,7 @@ function displayQuestion() {
 
     // Display the options
     optionsContainer.innerHTML = "";
-    optionsArray.forEach(function (option, index) {
+    shuffledOptions.forEach(function (option, index) {
         var optionDiv = document.createElement("div");
         optionDiv.className = "option";
         optionDiv.textContent = option;
@@ -187,6 +187,7 @@ function displayQuestion() {
                 startTime = new Date(); // Record start time for the next question
             } else {
                 document.getElementById("question-box").style.display = 'none';
+                document.getElementById("end-study").style.display = 'block';
                 updateTimer();
             }
         } 
