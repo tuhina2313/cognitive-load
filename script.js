@@ -34,13 +34,13 @@ function createResponseData(ques, res, question_tag, allClicks, startT, endT, el
     allResponses.push(responseData);
 }
 
-// function shuffleArray(array) {
-//     // Shuffle array using Fisher-Yates algorithm
-//     for (let i = array.length - 1; i > 0; i--) {
-//         const j = Math.floor(Math.random() * (i + 1));
-//         [array[i], array[j]] = [array[j], array[i]];
-//     }
-// }
+function shuffleOptions(array) {
+    // Shuffle array using Fisher-Yates algorithm
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+}
 
 function shuffleArray(array, constantIndices) {
     const shuffledArray = array.slice(); // Create a shallow copy of the original array
@@ -144,7 +144,7 @@ function displayQuestion() {
     questionContainer.textContent = questions[currentQuestionIndex].question;
 
     optionsArray = questions[currentQuestionIndex].options.slice(); // Create a copy of the original array
-    shuffleArray(optionsArray);
+    shuffleOptions(optionsArray);
 
     // Display the options
     optionsContainer.innerHTML = "";
