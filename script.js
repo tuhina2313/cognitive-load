@@ -144,7 +144,10 @@ function displayQuestion() {
     questionContainer.textContent = questions[currentQuestionIndex].question;
 
     optionsArray = questions[currentQuestionIndex].options.slice(); // Create a copy of the original array
-    shuffleOptions(optionsArray);
+    if (questions[currentQuestionIndex].tag == "question")
+    {
+        shuffleOptions(optionsArray);
+    }
 
     // Display the options
     optionsContainer.innerHTML = "";
@@ -178,6 +181,12 @@ function displayQuestion() {
             var elapsedTime = endTime - startTime;
             var question_tag = JSON.stringify(questions[currentQuestionIndex].tag);
             var correct_option = JSON.stringify(questions[currentQuestionIndex].correct_option);
+
+            if ((questions[currentQuestionIndex].tag == "attentionCheck") && selectedIndex != questions[currentQuestionIndex].correct_option)
+            {
+                console.log("Check: "+ questions[currentQuestionIndex].tag + "Rating: " + userRating);
+                alert("Attention check failed! Please read the questions and responses carefully.");
+            }
 
             // if (question_tag.replace(/[^a-zA-Z0-9]/g, '') == "attentionCheck")
             // {
@@ -261,6 +270,6 @@ readCSV("data/batch1.csv", function (data) {
 
     startTime = new Date();
     console.log("Number of questions: " + questions.length);
-    questions = shuffleArray(questions, [5, 11]);
+    questions = shuffleArray(questions, [3, 8, 12]);
     startStudy();
 });
