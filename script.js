@@ -214,7 +214,7 @@ function displayQuestion() {
             } else {
                 document.getElementById("question-box").style.display = 'none';
                 document.getElementById("end-study").style.display = 'block';
-                updateTimer();
+                displayLastPage();
             }
         } 
     });
