@@ -8,8 +8,6 @@ var selectedIndex = null;
 var allClicks = [];
 var allResponses = [];
 var studyTime = 10;
-const startStudyTime = new Date().getTime();
-const endStudyTime = startStudyTime + studyTime * 60 * 1000;
 
 // Function to read CSV file
 function readCSV(file, callback) {
@@ -57,22 +55,6 @@ function shuffleArray(array, constantIndices) {
     }
 
     return shuffledArray;
-}
-
-function updateTimer() {
-    var currentTime = new Date().getTime();
-    const remainingTime = endStudyTime - currentTime;
-    if (remainingTime <= 0) {
-      // Time is up, show the submit button
-      displayLastPage();
-    } else {
-      // Calculate remaining minutes and seconds
-      const minutes = Math.floor(remainingTime / 60000);
-      const seconds = Math.floor((remainingTime % 60000) / 1000);
-
-      document.getElementById('timer').innerHTML = `Time remaining: ${minutes}m ${seconds}s`;
-      setTimeout(updateTimer, 1000); // Update every second
-    }
 }
 
 function startStudy(){
@@ -132,6 +114,7 @@ function displayQuestion() {
     document.getElementById("consent-page").style.display = 'none';
 
     document.getElementById("question-box").style.display = 'block';
+    startTime = new Date();
 
     var questionHeading = document.getElementById("question-heading");
     var questionContainer = document.getElementById("question-container");
@@ -268,7 +251,6 @@ readCSV("data/batch1.csv", function (data) {
         questions.push(question);
     }
 
-    startTime = new Date();
     console.log("Number of questions: " + questions.length);
     questions = shuffleArray(questions, [3, 8, 12]);
     startStudy();
