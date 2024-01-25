@@ -184,7 +184,7 @@ function displayQuestion() {
 
             if ((questions[currentQuestionIndex].tag == "attentionCheck") && selectedIndex != questions[currentQuestionIndex].correct_option)
             {
-                console.log("Check: "+ questions[currentQuestionIndex].tag + "Rating: " + userRating);
+                console.log("Check: "+ questions[currentQuestionIndex].tag + "Rating: " + selectedIndex);
                 alert("Attention check failed! Please read the questions and responses carefully.");
             }
 
