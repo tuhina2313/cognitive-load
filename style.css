@@ -15,10 +15,10 @@ body {
 }
 #options-container {
     display: flex;
-    text-align: center;
+    text-align: left;
     justify-content: space-around;
     margin-top: 20px;
-    padding: 20px;
+    padding: 50px;
     width: 75%;
 }
 #end-container{
